@@ -38,8 +38,8 @@ exports.getStations = function () {
             return {
                 id: station.$.StationId,
                 name: station.$.Name,
-                x: station.$.X,
-                y: station.$.Y
+                x: parseFloat(station.$.X),
+                y: parseFloat(station.$.Y)
             };
         });
     });
