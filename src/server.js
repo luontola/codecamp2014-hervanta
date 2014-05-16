@@ -2,13 +2,15 @@
 
 var Q = require('q');
 var express = require('express');
+var routes = require('./routes/index');
+var path = require('path'); 
 
 var server = express();
 
 server.get('/', function (req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.send("It's alive! Alive! ALIVE!");
+  res.sendfile('index.html', {'root': __dirname + '/../public' });
 });
+
 
 server.start = function () {
     var port = 8080;
