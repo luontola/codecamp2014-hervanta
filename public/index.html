@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="HervantaApp">
+<html ng-app="HervantaApp" style="height: 100%">
 <head>
   <title>Hervannan tähti</title>
   <meta charset="utf-8" />
@@ -8,8 +8,8 @@
 
    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
 </head>
-<body ng-controller="MapCtrl">
-  <leaflet width="1024px" height="800px" center="tampere"></leaflet>
+<body ng-controller="MapCtrl" style="height: 100%">
+  <leaflet width="100%" height="100%" center="tampere" markers="markers"></leaflet>
 
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
   <script src="/bower_components/angular/angular.js"></script>

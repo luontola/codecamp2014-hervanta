@@ -1,6 +1,6 @@
 var app = angular.module("HervantaApp", ["leaflet-directive"]);
 
-app.controller("MapCtrl", [ "$scope", function($scope) {
+app.controller("MapCtrl", [ "$scope", "$http", function($scope, $http) {
   angular.extend($scope, {
     defaults: {
         tileLayer: "https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png",
@@ -16,4 +16,12 @@ app.controller("MapCtrl", [ "$scope", function($scope) {
         zoom: 13
     }
   });
+  $scope.markers = [];
+    $http.get('/stations')
+    .success(function(stations){
+        stations = stations.map(function(station){
+            return {lat: station.y, lng: station.x, message: station.name};
+        });
+        $scope.markers = stations;
+    });
 }]);
