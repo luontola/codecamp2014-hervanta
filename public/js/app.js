@@ -24,4 +24,8 @@ app.controller("MapCtrl", [ "$scope", "$http", function($scope, $http) {
         });
         $scope.markers = stations;
     });
+  $scope.nextLines = [];
+  for (var i = 0; i < 15; i++) {
+    $scope.nextLines.push({name: i});
+  }
 }]);

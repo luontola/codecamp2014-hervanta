@@ -7,14 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+   <link rel="stylesheet" href="/public/css/app.css" />
 </head>
 <body ng-controller="MapCtrl" style="height: 100%">
-  <leaflet width="100%" height="100%" center="tampere" markers="markers"></leaflet>
+  <section>
+    <div id="map">
+      <leaflet width="80%" height="100%" center="tampere" markers="markers"></leaflet>
+    </div>
+    <div id="ui">
+      <ul>
+        <li ng-repeat="nextLine in nextLines">
+          {{ nextLine.name }}
+       </li>
+      </ul>
+    </div>
+  </section>
 
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
   <script src="/bower_components/angular/angular.js"></script>
   <script src="/bower_components/ng-leaflet/dist/angular-leaflet-directive.min.js"></script>
   <script src="/public/js/app.js"></script>
-  
+
 </body>
 </html>
