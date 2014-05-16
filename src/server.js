@@ -11,12 +11,12 @@ server.use('/bower_components', express.static(__dirname + '/../bower_components
 server.use('/public', express.static(__dirname + '/../public'));
 
 server.get('/', function (req, res) {
-  res.sendfile('index.html', {'root': __dirname + '/../public' });
+    res.sendfile('index.html', {'root': __dirname + '/../public' });
 });
 
-server.get('/stations', function(req, res, next) {
-    timetables.getStations().then(function(stations) {
-        res.setHeader('Content-Type', 'application/json');
+server.get('/stations', function (req, res, next) {
+    timetables.getStations().then(function (stations) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
         res.send(JSON.stringify(stations));
     }).fail(next);
 });
