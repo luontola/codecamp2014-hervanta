@@ -28,4 +28,9 @@ app.controller("MapCtrl", [ "$scope", "$http", function($scope, $http) {
   for (var i = 0; i < 15; i++) {
     $scope.nextLines.push({name: i});
   }
+
+  $scope.selectLine = function(line) {
+    $scope.selectedLine = line;
+  };
+
 }]);
