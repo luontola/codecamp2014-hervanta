@@ -25,6 +25,11 @@ li.line {
   font-size: 16pt;
 }
 
+li.line:hover
+{ 
+background-color:yellow;
+}
+
 li:nth-child(2n) {
   background: #CCC
 }
