@@ -3,9 +3,28 @@
 var xml2js = require('xml2js');
 var fs = require('fs');
 var Q = require('q');
+var _ = require('underscore');
 
+function dedollarify(obj) {
+    if (!_.isObject(obj)) {
+        return obj;
+    }
+    if (_.isArray(obj)) {
+        return _.map(obj, dedollarify);
+    }
+    if (obj.$) {
+        obj = _.chain(obj)
+            .extend(obj.$)
+            .omit('$')
+            .value();
+    }
+    _.keys(obj).map(function (key) {
+        obj[key] = dedollarify(obj[key]);
+    });
+    return obj;
+}
 
-var readXmlDump = function (filename) {
+function readXmlDump(filename) {
     var deferred = Q.defer();
     fs.readFile(filename, "utf8", function (err, data) {
         if (err) {
@@ -15,31 +34,32 @@ var readXmlDump = function (filename) {
                 if (err) {
                     deferred.reject(err);
                 } else {
-                    deferred.resolve(result);
+                    deferred.resolve(dedollarify(result.jp_database));
                 }
             });
         }
     });
     return deferred.promise;
-};
+}
 
-var timetablesFile = 'data/LVM.xml';
-var data = readXmlDump(timetablesFile);
+var timetableDb = readXmlDump('data/LVM.xml');
 
-data.then(function () {
+timetableDb.then(function (db) {
     console.log("Finished reading timetables");
-}).fail(function (err) {
-    console.log("Failed to read timetables", err);
-});
+    //console.log(JSON.stringify(db, null, 2));
+}).
+    fail(function (err) {
+        console.log("Failed to read timetables", err);
+    });
 
 exports.getStations = function () {
-    return data.then(function (d) {
-        return d.jp_database.Station.map(function (station) {
+    return timetableDb.then(function (db) {
+        return db.Station.map(function (station) {
             return {
-                id: station.$.StationId,
-                name: station.$.Name,
-                x: parseFloat(station.$.X),
-                y: parseFloat(station.$.Y)
+                id: station.StationId,
+                name: station.Name,
+                x: parseFloat(station.X),
+                y: parseFloat(station.Y)
             };
         });
     });
