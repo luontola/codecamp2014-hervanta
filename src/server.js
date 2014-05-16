@@ -7,6 +7,9 @@ var path = require('path');
 
 var server = express();
 
+server.use('/bower_components', express.static(__dirname + '/../bower_components'));
+server.use('/public', express.static(__dirname + '/../public'));
+
 server.get('/', function (req, res) {
   res.sendfile('index.html', {'root': __dirname + '/../public' });
 });
