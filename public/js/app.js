@@ -36,4 +36,17 @@ app.controller("MapCtrl", [ "$scope", "$http", function ($scope, $http) {
         $scope.nextLines.push({name: i});
     }
 
+    $scope.paths = {
+        p1: {
+            color: '#008000',
+            weight: 3,
+            latlngs: [
+                {lat: 61.507629307269, lng: 23.777599352282},
+                {lat: 61.497458716956, lng: 23.761532729201},
+                {lat: 61.505390234425, lng: 23.778244802753},
+                {lat: 61.663381860554, lng: 23.822868691347}
+            ]
+        }
+    };
+
 }]);
