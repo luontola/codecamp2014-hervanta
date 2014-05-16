@@ -13,8 +13,8 @@ function dedollarify(obj) {
         return _.map(obj, dedollarify);
     }
     if (obj.$) {
-        obj = _.chain(obj)
-            .extend(obj.$)
+        obj = _.chain(obj.$)
+            .extend(obj)
             .omit('$')
             .value();
     }
