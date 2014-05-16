@@ -24,6 +24,20 @@ function dedollarify(obj) {
     return obj;
 }
 
+function fixData(db) {
+    var stationIds = _.pluck(db.Station, 'StationId');
+    var services = db.Timetbls[0].Service;
+    delete db.Timetbls;
+    db.Service = _.map(services, function (service) {
+        service.Stop = _.filter(service.Stop, function (stop) {
+            // the data does not contain a <StationId> for each StationId in <Stop>
+            return _.contains(stationIds, stop.StationId);
+        });
+        return service;
+    });
+    return db;
+}
+
 function readXmlDump(filename) {
     var deferred = Q.defer();
     fs.readFile(filename, "utf8", function (err, data) {
@@ -34,7 +48,7 @@ function readXmlDump(filename) {
                 if (err) {
                     deferred.reject(err);
                 } else {
-                    deferred.resolve(dedollarify(result.jp_database));
+                    deferred.resolve(fixData(dedollarify(result.jp_database)));
                 }
             });
         }
@@ -67,7 +81,7 @@ exports.getStations = function () {
 
 exports.getServicesByStationId = function (stationId) {
     return timetableDb.then(function (db) {
-        return _.chain(db.Timetbls[0].Service)
+        return _.chain(db.Service)
             .filter(function (service) {
                 return _.find(service.Stop, function (stop) {
                     return stop.StationId === stationId;
