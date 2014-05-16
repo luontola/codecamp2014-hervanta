@@ -15,9 +15,17 @@ server.get('/', function (req, res) {
 });
 
 server.get('/stations', function (req, res, next) {
-    timetables.getStations().then(function (stations) {
+    timetables.getStations().then(function (data) {
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        res.send(JSON.stringify(stations));
+        res.send(JSON.stringify(data));
+    }).fail(next);
+});
+
+server.get('/services', function (req, res, next) {
+    var stationId = req.param('stationId');
+    timetables.getServicesByStationId(stationId).then(function (data) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.send(JSON.stringify(data));
     }).fail(next);
 });
 

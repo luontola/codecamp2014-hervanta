@@ -64,3 +64,15 @@ exports.getStations = function () {
         });
     });
 };
+
+exports.getServicesByStationId = function (stationId) {
+    return timetableDb.then(function (db) {
+        return _.chain(db.Timetbls[0].Service)
+            .filter(function (service) {
+                return _.find(service.Stop, function (stop) {
+                    return stop.StationId == stationId;
+                });
+            })
+            .value();
+    });
+};
