@@ -79,7 +79,7 @@ exports.getServicesByStationId = function (stationId) {
 };
 
 exports.getNextServicesByStationId = function (stationId, time) {
-    time = parseInt(time);
+    time = parseInt(time, 10);
     return exports.getServicesByStationId(stationId)
         .then(function (services) {
             return _.chain(services)
@@ -93,7 +93,7 @@ exports.getNextServicesByStationId = function (stationId, time) {
                             var stop = _.find(service.Stop, function (stop) {
                                 return stop.StationId === stationId;
                             });
-                            return (parseInt(stop.Arrival) - time + 2400) % 2400;
+                            return (parseInt(stop.Arrival, 10) - time + 2400) % 2400;
                         })
                         .first()
                         .value();
