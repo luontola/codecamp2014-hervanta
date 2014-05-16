@@ -2,7 +2,6 @@
 
 var Q = require('q');
 var express = require('express');
-var routes = require('./routes/index');
 var path = require('path');
 var timetables = require('./timetables');
 
