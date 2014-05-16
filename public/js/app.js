@@ -17,7 +17,7 @@ app.controller("MapCtrl", [ "$scope", "$http", "$timeout", "$filter", function (
         }
     });
 
-    $scope.currentStation = 3735;
+    $scope.currentStation = 522;
     $scope.currentTime = 1210;
 
     var stopIcon = {
