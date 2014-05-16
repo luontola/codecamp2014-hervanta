@@ -70,9 +70,34 @@ exports.getServicesByStationId = function (stationId) {
         return _.chain(db.Timetbls[0].Service)
             .filter(function (service) {
                 return _.find(service.Stop, function (stop) {
-                    return stop.StationId == stationId;
+                    return stop.StationId === stationId;
                 });
             })
+
             .value();
     });
+};
+
+exports.getNextServicesByStationId = function (stationId, time) {
+    time = parseInt(time);
+    return exports.getServicesByStationId(stationId)
+        .then(function (services) {
+            return _.chain(services)
+                .groupBy(function (service) {
+                    return service.ServiceNbr[0].ServiceNbr;
+                })
+                .values()
+                .map(function (servicesOfOneServiceNbr) {
+                    return _.chain(servicesOfOneServiceNbr)
+                        .sortBy(function (service) {
+                            var stop = _.find(service.Stop, function (stop) {
+                                return stop.StationId === stationId;
+                            });
+                            return (parseInt(stop.Arrival) - time + 2400) % 2400;
+                        })
+                        .first()
+                        .value();
+                })
+                .value();
+        });
 };

@@ -14,19 +14,25 @@ server.get('/', function (req, res) {
     res.sendfile('index.html', {'root': __dirname + '/../public' });
 });
 
-server.get('/stations', function (req, res, next) {
-    timetables.getStations().then(function (data) {
+function sendJsonResult(res, next, future) {
+    future.then(function (data) {
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
         res.send(JSON.stringify(data));
     }).fail(next);
+}
+
+server.get('/stations', function (req, res, next) {
+    sendJsonResult(res, next, timetables.getStations());
 });
 
 server.get('/services', function (req, res, next) {
     var stationId = req.param('stationId');
-    timetables.getServicesByStationId(stationId).then(function (data) {
-        res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        res.send(JSON.stringify(data));
-    }).fail(next);
+    var time = req.param('time');
+    if (time) {
+        sendJsonResult(res, next, timetables.getNextServicesByStationId(stationId, time));
+    } else {
+        sendJsonResult(res, next, timetables.getServicesByStationId(stationId));
+    }
 });
 
 server.start = function () {
